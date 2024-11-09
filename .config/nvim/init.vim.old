@@ -1,0 +1,199 @@
+" ============================================================================
+" GENERAL SETTINGS
+" ============================================================================
+set encoding=utf-8              " Use Unicode encoding
+set title                      " Set window title
+set number                     " Show line numbers
+set cursorline                 " Highlight current line
+set ruler                      " Show cursor position
+set scrolloff=5               " Keep cursor 5 lines from screen edges
+set showtabline=2             " Always show tab bar
+set clipboard=unnamedplus      " Use system clipboard
+set mouse=a                    " Enable mouse support
+set termguicolors             " Enable true color support
+set hidden                     " Allow background buffers
+set cmdheight=2               " Better display for messages
+set updatetime=300            " Faster completion
+set shortmess+=c              " Don't give completion messages
+set signcolumn=yes            " Always show sign column
+
+" Indentation settings
+set autoindent                 " Auto indent new lines
+set smartindent               " Smart indenting
+set expandtab                 " Use spaces instead of tabs
+set tabstop=4                 " Tab width
+set softtabstop=4             " Soft tab width
+set shiftwidth=4              " Indent width
+set smarttab                  " Smart tab behavior
+set colorcolumn=80            " Line length marker
+set nowrap                    " Don't wrap lines
+
+" Search settings
+set ignorecase                " Case-insensitive search
+set smartcase                 " Smart case search
+
+" Error handling
+set noerrorbells              " Disable error bells
+set novisualbell             " Disable visual bell
+
+" Completion settings
+set completeopt+=noinsert     " Auto select first completion item
+set completeopt-=preview      " Disable preview window
+set wildmode=list:longest     " Command completion behavior
+
+" Set default shell
+set shell=/usr/bin/zsh
+
+" ============================================================================
+" VIM-PLUG INITIALIZATION
+" ============================================================================
+if has('nvim')
+    call plug#begin('~/.config/nvim/plugged')
+else
+    call plug#begin('~/.vim/plugged')
+endif
+
+" ============================================================================
+" PLUGINS
+" ============================================================================
+" Editor Enhancement
+Plug 'tpope/vim-sensible'             " Sensible defaults
+Plug 'tpope/vim-surround'             " Surround text objects
+Plug 'tpope/vim-commentary'           " Comment code
+Plug 'tpope/vim-fugitive'             " Git integration
+Plug 'Townk/vim-autoclose'            " Auto close pairs
+Plug 'terryma/vim-multiple-cursors'   " Multiple cursors
+Plug 'airblade/vim-gitgutter'         " Git diff in gutter
+
+" File Navigation
+Plug 'scrooloose/nerdtree'            " File explorer
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'               " Fuzzy finder
+
+" Appearance
+Plug 'vim-airline/vim-airline'        " Status line
+Plug 'vim-airline/vim-airline-themes' " Airline themes
+Plug 'ryanoasis/vim-devicons'         " File icons
+Plug 'flazz/vim-colorschemes'         " Color schemes
+Plug 'drewtempelmeyer/palenight.vim'  " Palenight theme
+Plug 'Yggdroot/indentLine'            " Indent guides
+Plug 'nathanaelkane/vim-indent-guides'
+
+" Language Support
+Plug 'sheerun/vim-polyglot'           " Language pack
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'dense-analysis/ale'             " Linting
+Plug 'SirVer/ultisnips'              " Snippets
+
+" Web Development
+Plug 'pangloss/vim-javascript'        " JavaScript support
+Plug 'maxmellon/vim-jsx-pretty'       " JSX support
+Plug 'mattn/emmet-vim'               " HTML/CSS expansion
+Plug 'ap/vim-css-color'              " Color preview
+Plug 'prettier/vim-prettier', {
+    \ 'do': 'yarn install',
+    \ 'branch': 'release/0.x'
+    \ }
+
+" Additional Features
+Plug 'junegunn/goyo.vim'             " Distraction-free writing
+Plug 'lervag/vimtex'                 " LaTeX support
+Plug 'tmux-plugins/vim-tmux'         " Tmux integration
+Plug 'fisadev/FixedTaskList.vim'     " Task list
+
+call plug#end()
+
+" ============================================================================
+" PLUGIN CONFIGURATIONS
+" ============================================================================
+" CoC Configuration
+let g:coc_global_extensions = [
+    \ 'coc-json',
+    \ 'coc-css',
+    \ 'coc-ultisnips',
+    \ 'coc-tsserver',
+    \ 'coc-emmet',
+    \ 'coc-tag',
+    \ 'coc-omni',
+    \ 'coc-syntax',
+    \ 'coc-yaml',
+    \ 'coc-solargraph',
+    \ 'coc-phpls',
+    \ 'coc-html',
+    \ 'coc-tailwindcss',
+    \ 'coc-markdownlint',
+    \ 'coc-git'
+    \ ]
+
+" NERDTree Configuration
+let NERDTreeIgnore = ['\.pyc$', '\.pyo$']
+map <C-g> :NERDTreeToggle<CR>
+nmap ,t :NERDTreeFind<CR>
+
+" Airline Configuration
+let g:airline_theme = 'onedark'
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+
+" Prettier Configuration
+let g:prettier#autoformat = 1
+autocmd BufWritePre *.html,*.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue PrettierAsync
+
+" Indent Guides Configuration
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_start_level = 1
+let g:indent_guides_guide_size = 1
+let g:indent_guides_exclude_filetypes = ['help', 'nerdtree', 'startify', 'Preview','__doc__','rst']
+
+" VimTeX Configuration
+let g:tex_flavor='latex'
+let g:vimtex_view_method='zathura'
+let g:vimtex_quickfix_mode=0
+set conceallevel=1
+let g:tex_conceal='abdmg'
+
+
+" ============================================================================
+" KEY MAPPINGS
+" ============================================================================
+" General mappings
+nnoremap <space> <nop>
+let mapleader=" "
+
+" Better window navigation
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" Tab navigation
+nnoremap <leader>tn :tabnew<CR>
+nnoremap <leader>th :tabprev<CR>
+nnoremap <leader>tl :tabnext<CR>
+
+" FZF
+nnoremap <C-p> :Files<CR>
+nnoremap <leader>b :Buffers<CR>
+nnoremap <leader>h :History<CR>
+
+" Clear search highlighting
+nnoremap <silent> // :noh<CR>
+
+" Save file
+nnoremap <leader>w :w<CR>
+
+" CoC mappings
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" ============================================================================
+" THEME SETTINGS
+" ============================================================================
+syntax enable
+set background=dark
+colorscheme palenight
+
+" Make background transparent
+hi Normal guibg=NONE ctermbg=NONE
